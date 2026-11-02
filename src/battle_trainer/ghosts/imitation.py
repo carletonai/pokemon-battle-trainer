@@ -5,7 +5,8 @@ TODO(ghosts):
      ``ReplayDataset``; report top-1 accuracy on held-out battles per band.
   2. ``GhostPlayer``: a ``poke_env.player.Player`` whose ``choose_move`` encodes the
      battle with the shared encoder, runs the model, and returns the argmax (or a
-     temperature-sampled) legal action via ``SinglesEnv.action_to_order``.
+     temperature-sampled) legal action via ``SinglesEnv.action_to_order``. Pass the
+     action as ``np.int64``, not a plain ``int``: poke-env calls ``.item()`` on it.
   3. First milestone: a ghost that beats ``SimpleHeuristicsPlayer`` over a 500-battle panel.
 """
 

@@ -36,7 +36,7 @@ Week-4 milestone: one ghost that beats the heuristic bot.
 
 Package: `battle_trainer.player`. Already there: a Gen 1 `SinglesEnv` with a tiny v0 observation (`env.py`), action masking (`policy.mask_logits`), and a network skeleton.
 
-1. Run `make_env(RandomPlayer(start_listening=False))` and step it with random legal actions to see observations, masks and rewards flow.
+1. Run `make_env(make_bot("random", start_listening=False))` against the local server and step it with random legal actions to see observations (`obs["observation"]`), masks (`obs["action_mask"]`) and rewards flow.
 2. Decide hand-rolled PPO versus a library (`ppo.py` has the trade-off); say which in the channel.
 3. Build the real state encoder (`encoder.py`): species, HP, status, boosts and revealed flags for all twelve slots, known moves with PP, field state. Use Showdown's random-battle sets as a prior for unrevealed species.
 4. Train against the random bot, then the max-damage bot, from scratch. Report 500-battle panels with intervals.
