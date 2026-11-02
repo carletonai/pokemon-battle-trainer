@@ -19,7 +19,7 @@ jobs:
         with:
           enable-cache: true
       - name: Install
-        run: uv sync
+        run: uv sync --locked
       - name: Lint
         run: uv run ruff check .
       - name: Format check
@@ -46,7 +46,7 @@ jobs:
       - name: Build Showdown at the pinned commit
         run: scripts/setup_showdown.sh
       - name: Install
-        run: uv sync
+        run: uv sync --locked
       - name: Start a local server
         shell: bash
         run: |

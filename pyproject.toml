@@ -12,6 +12,7 @@ dependencies = [
   "gymnasium>=1.3",  # poke-env 0.16.1 pins gymnasium==1.3.0 and websockets==16.1.1; bump with poke-env
   "numpy>=2.0",
   # Learning. PPO comes from Stable-Baselines3; MaskablePPO lives in sb3-contrib.
+  # See the note on PyTorch wheel size under [tool.uv] below.
   "torch>=2.8",
   "stable-baselines3>=2.9.2,<3",
   "sb3-contrib>=2.9.2,<3",
@@ -36,17 +37,18 @@ build-backend = "hatchling.build"
 packages = ["src/battle_trainer"]
 
 # ---------------------------------------------------------------------------
-# uv: CPU-only PyTorch on Linux by default. It is a tenth of the size of the CUDA
-# build, works on every laptop and in CI, and training here is bound by simulator
-# throughput, not GPUs. For a CUDA install see README.md ("GPU").
+# PyTorch comes from PyPI so that uv.lock can be produced anywhere. On Linux that wheel
+# bundles CUDA (about 3 GB with its nvidia-* dependencies); macOS and Windows get the
+# small CPU build. For CPU-only wheels on Linux, add this, then `uv lock` and commit:
+#
+#   [[tool.uv.index]]
+#   name = "pytorch-cpu"
+#   url = "https://download.pytorch.org/whl/cpu"
+#   explicit = true
+#
+#   [tool.uv.sources]
+#   torch = [{ index = "pytorch-cpu", marker = "sys_platform == 'linux'" }]
 # ---------------------------------------------------------------------------
-[[tool.uv.index]]
-name = "pytorch-cpu"
-url = "https://download.pytorch.org/whl/cpu"
-explicit = true
-
-[tool.uv.sources]
-torch = [{ index = "pytorch-cpu", marker = "sys_platform == 'linux'" }]
 
 # ---------------------------------------------------------------------------
 # Lint and format
