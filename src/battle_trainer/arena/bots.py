@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import Any
+
 from poke_env.player import MaxBasePowerPlayer, Player, RandomPlayer, SimpleHeuristicsPlayer
 from poke_env.ps_client import ServerConfiguration
 
@@ -22,8 +24,14 @@ def make_bot(
     battle_format: str = BATTLE_FORMAT,
     server: ServerConfiguration | None = None,
     max_concurrent_battles: int = 1,
+    **player_kwargs: Any,
 ) -> Player:
-    """Instantiate a built-in bot connected to ``server`` (default: the local server)."""
+    """Instantiate a built-in bot connected to ``server`` (default: the local server).
+
+    Extra keyword arguments go to the poke-env ``Player`` constructor. To use a bot as the
+    opponent inside ``player.env.make_env`` pass ``start_listening=False``: the wrapper
+    drives it directly and it needs no connection of its own.
+    """
     try:
         cls = BUILTIN_BOTS[name]
     except KeyError as exc:
@@ -32,4 +40,5 @@ def make_bot(
         battle_format=battle_format,
         server_configuration=server or local_server(),
         max_concurrent_battles=max_concurrent_battles,
+        **player_kwargs,
     )

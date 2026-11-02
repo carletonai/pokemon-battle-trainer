@@ -21,13 +21,15 @@ TODO(player): implement ``StateEncoder``.
 from __future__ import annotations
 
 import torch
+from poke_env.battle import PokemonType, Status
 from torch import nn
 
 # Gen 1 vocabulary sizes with one slot spare for "unknown" (index 0).
 GEN1_NUM_SPECIES = 151 + 1
 GEN1_NUM_MOVES = 165 + 1
-NUM_TYPES = 18 + 1  # 15 types in Gen 1; keep room for later generations
-NUM_STATUS = 7 + 1
+# Sized from poke-env's enums so later generations (Stellar, "???") fit without edits.
+NUM_TYPES = len(PokemonType) + 1
+NUM_STATUS = len(Status) + 1
 
 
 class StateEncoder(nn.Module):

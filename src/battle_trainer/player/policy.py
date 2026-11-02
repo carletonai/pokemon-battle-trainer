@@ -2,8 +2,9 @@
 
 At most nine legal actions a turn (4 moves, up to 5 switches) out of a fixed space of
 ten (``config.NUM_ACTIONS``). Illegal actions get probability zero by setting their
-logits to ``-inf`` before the softmax; the mask comes from
-``SinglesEnv.get_action_mask`` via the environment's ``info``/observation.
+logits to ``-inf`` before the softmax. The mask arrives in every observation as
+``obs["action_mask"]`` (``np.int8``, length ``NUM_ACTIONS``), computed by poke-env's
+``SinglesEnv.get_action_mask``.
 
 TODO(player): implement ``MaskedActorCritic``.
   1. Shared trunk from ``encoder.StateEncoder``; a policy head of ``NUM_ACTIONS`` logits
