@@ -3,6 +3,8 @@ name = "battle-trainer"
 version = "0.1.0"
 description = "AI Pokémon Battle Trainer: a self-play RL bot for Pokémon Showdown (CAIS RL project)"
 readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
 requires-python = ">=3.11"
 dependencies = [
   # Simulator client: talks to a Pokémon Showdown server and exposes Gymnasium/PettingZoo envs.
