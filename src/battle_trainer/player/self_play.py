@@ -14,6 +14,8 @@ TODO(player): implement ``OpponentPool`` and ``train``.
      ``ppo.ppo_update``, evaluate on a held-out panel the Coach cannot pick from.
   3. Checkpoints to ``checkpoints/`` (git-ignored) with the Showdown commit and poke-env
      version written alongside, so every result is reproducible.
+  4. Pick the experiment tracker (W&B, TensorBoard or JSONL in ``runs/``; open decision)
+     and log the opponent mix and panel results of every run with it.
 """
 
 from __future__ import annotations
@@ -24,7 +26,10 @@ from poke_env.player import Player
 
 
 class OpponentPool:
-    """Named opponents and how to build them. Not implemented yet."""
+    """Minimal registry of named opponents and how to build them.
+
+    TODO(player): ``sample(sampler)`` and checkpoint-backed past selves.
+    """
 
     def __init__(self) -> None:
         self._makers: dict[str, Callable[[], Player]] = {}

@@ -19,7 +19,7 @@ Opponents go built-in bots, then ghosts, then Metamon's released agents, then re
 
 You need:
 
-- **Python 3.12+** and [uv](https://docs.astral.sh/uv/) (`curl -LsSf https://astral.sh/uv/install.sh | sh`, or `pip install uv`)
+- **Python 3.11+** and [uv](https://docs.astral.sh/uv/) (`curl -LsSf https://astral.sh/uv/install.sh | sh`, or `pip install uv`)
 - **Node.js 22.18+** to run the simulator ([nodejs.org](https://nodejs.org))
 - **git**
 

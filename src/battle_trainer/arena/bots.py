@@ -17,6 +17,12 @@ BUILTIN_BOTS: dict[str, type[Player]] = {
     "heuristic": SimpleHeuristicsPlayer,
 }
 
+# TODO(arena): add Metamon's released agents as the tier after the built-in bots and the
+# ghosts (https://github.com/UT-Austin-RPL/metamon exposes its checkpoints as poke-env
+# players). Confirm which formats they support first: they were trained on Gens 1-4
+# OU/UU/NU/Ubers and may not cover gen1randombattle. Register them here so panels, the
+# offline Elo ladder and the Coach's opponent pool all see them.
+
 
 def make_bot(
     name: str,

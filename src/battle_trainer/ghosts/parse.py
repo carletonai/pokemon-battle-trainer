@@ -10,16 +10,23 @@ when they chose, which means:
   * recovering the action from the next turn's events (a ``|move|`` or ``|switch|`` by
     that player), including forced switches after a faint.
 
-poke-env's ``Battle`` object already parses protocol lines and tracks revealed
-information for the connected player. Reusing it for one side of a replay is the
-shortest path to one state encoder shared with the Player.
+This is the reconstruction problem Metamon solved, and the planning notes name Metamon's
+pipeline as the default. Two routes; the decision is open:
+
+  A. Reuse Metamon's reconstruction code and/or its parsed-replays dataset. Check first
+     whether gen1randombattle is covered: Metamon trained on Gens 1-4 OU/UU/NU/Ubers.
+  B. Drive one side of a raw replay through poke-env's ``Battle`` parser (which tracks
+     revealed information for the connected player) and back-fill the player's own team
+     from later turns. More work, but one state encoder is then shared with the Player.
 
 TODO(ghosts): implement ``parse_replay``.
-  1. Split the log into turns; feed lines through a ``Battle`` for the chosen side.
-  2. At each decision point emit ``(observation, action)`` using the Player's encoder
+  1. Read Metamon's replay-parsing code and dataset; decide A or B and say which in the
+     channel. Steps 2-4 describe route B.
+  2. Split the log into turns; feed lines through a ``Battle`` for the chosen side.
+  3. At each decision point emit ``(observation, action)`` using the Player's encoder
      (``battle_trainer.player.encoder``) and poke-env's action indices
      (``SinglesEnv.order_to_action``) so ghosts and the Player share one action space.
-  3. Validate on a handful of hand-checked replays before scaling up.
+  4. Validate on a handful of hand-checked replays before scaling up.
 """
 
 from __future__ import annotations
