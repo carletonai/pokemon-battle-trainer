@@ -62,6 +62,8 @@ jobs:
         run: uv run python scripts/smoke_battle.py --battles 5
       - name: Server-backed tests
         run: uv run pytest -m showdown
+        env:
+          SHOWDOWN_REQUIRED: "1"
       - name: Server log
         if: failure()
         run: cat showdown.log || true

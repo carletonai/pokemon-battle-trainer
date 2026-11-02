@@ -16,7 +16,7 @@ import sys
 
 from battle_trainer.arena.bots import BUILTIN_BOTS, make_bot
 from battle_trainer.arena.panel import run_panel
-from battle_trainer.config import BATTLE_FORMAT
+from battle_trainer.config import BATTLE_FORMAT, LOCAL_SERVER_HOST, LOCAL_SERVER_PORT
 from battle_trainer.engine.server import local_server
 
 
@@ -26,10 +26,11 @@ async def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--format", default=BATTLE_FORMAT)
     parser.add_argument("--player", default="max_damage", choices=sorted(BUILTIN_BOTS))
     parser.add_argument("--opponent", default="random", choices=sorted(BUILTIN_BOTS))
-    parser.add_argument("--port", type=int, default=8000)
+    parser.add_argument("--host", default=LOCAL_SERVER_HOST)
+    parser.add_argument("--port", type=int, default=LOCAL_SERVER_PORT)
     args = parser.parse_args(argv)
 
-    server = local_server(port=args.port)
+    server = local_server(host=args.host, port=args.port)
     player = make_bot(args.player, battle_format=args.format, server=server)
     opponent = make_bot(args.opponent, battle_format=args.format, server=server)
 

@@ -25,3 +25,8 @@ def test_mix_keeps_uniform_floor():
 def test_mix_with_zero_weights_is_uniform():
     p = mix_with_uniform({"a": 0.0, "b": 0.0}, floor=0.5)
     assert p == pytest.approx({"a": 0.5, "b": 0.5})
+
+
+def test_mix_rejects_negative_weights():
+    with pytest.raises(ValueError):
+        mix_with_uniform({"a": -1.0, "b": 2.0})

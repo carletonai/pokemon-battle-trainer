@@ -28,6 +28,8 @@ def mix_with_uniform(weights: dict[str, float], floor: float = UNIFORM_FLOOR) ->
     """
     if not 0.0 <= floor <= 1.0:
         raise ValueError("floor must be in [0, 1]")
+    if any(w < 0 for w in weights.values()):
+        raise ValueError("weights must be non-negative")
     names = list(weights)
     base = uniform(names)
     total = float(sum(weights.values()))
