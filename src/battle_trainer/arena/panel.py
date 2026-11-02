@@ -70,14 +70,16 @@ def wilson_interval(successes: float, n: int, z: float = 1.96) -> tuple[float, f
 async def run_panel(player: Player, opponent: Player, n_battles: int = PANEL_SIZE) -> PanelResult:
     """Battle ``player`` against ``opponent`` ``n_battles`` times on a running server.
 
-    Both players must point at the same server. Counters are read from poke-env, so call
-    ``reset_battles()`` on both players first if they have battled before.
+    Both players must point at the same server. poke-env's win/loss counters are
+    cumulative over a player's lifetime, so this reads them before and after and reports
+    only this panel's battles; one player can be panelled against many opponents in a row.
     """
+    won, lost, tied = player.n_won_battles, player.n_lost_battles, player.n_tied_battles
     await player.battle_against(opponent, n_battles=n_battles)
     return PanelResult(
         player=player.username,
         opponent=opponent.username,
-        wins=player.n_won_battles,
-        losses=player.n_lost_battles,
-        ties=player.n_tied_battles,
+        wins=player.n_won_battles - won,
+        losses=player.n_lost_battles - lost,
+        ties=player.n_tied_battles - tied,
     )

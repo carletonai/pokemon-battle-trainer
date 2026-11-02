@@ -1,6 +1,36 @@
+import asyncio
+
 import pytest
 
-from battle_trainer.arena.panel import PanelResult, wilson_interval
+from battle_trainer.arena.panel import PanelResult, run_panel, wilson_interval
+
+
+class _FakePlayer:
+    """Stands in for a poke-env Player: cumulative counters, like the real thing."""
+
+    def __init__(self, name: str, wins_per_battle: bool) -> None:
+        self.username = name
+        self.n_won_battles = 0
+        self.n_lost_battles = 0
+        self.n_tied_battles = 0
+        self._wins = wins_per_battle
+
+    async def battle_against(self, opponent, n_battles: int = 1) -> None:
+        for _ in range(n_battles):
+            if self._wins:
+                self.n_won_battles += 1
+                opponent.n_lost_battles += 1
+            else:
+                self.n_lost_battles += 1
+                opponent.n_won_battles += 1
+
+
+def test_run_panel_counts_only_this_panel():
+    player, opponent = _FakePlayer("p", wins_per_battle=True), _FakePlayer("o", False)
+    first = asyncio.run(run_panel(player, opponent, n_battles=3))
+    second = asyncio.run(run_panel(player, opponent, n_battles=5))
+    assert (first.n, first.wins) == (3, 3)
+    assert (second.n, second.wins) == (5, 5)
 
 
 def test_win_rate_counts_ties_as_half():
