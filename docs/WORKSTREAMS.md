@@ -1,81 +1,57 @@
-# Workstreams: where to start
+# Workstreams
 
-Pick one, say so in `#pokemon-battle-trainer`, and take the first unclaimed task. Every stub in `src/battle_trainer/` carries a `TODO(<stream>)` list that goes into more detail than this page; `grep -rn "TODO(" src/` shows all of them.
+Pick one, say so in `#pokemon-battle-trainer`, and take its first unclaimed task. Every stub in `src/battle_trainer/` carries a `TODO(<stream>)` list with more detail than this page; `grep -rn "TODO(" src/` shows them all. Get the [quick start](../README.md#quick-start) working first: every stream needs the smoke battle.
 
-Before anything else, get the stack running on your laptop ([README: Getting started](../README.md#getting-started)). The smoke battle proving the server, poke-env and the bots all talk to each other is the first thing every stream needs.
+## Arena: run the battles and keep score
 
-Open decision for the Player and Coach streams: experiment tracking. Stable-Baselines3 writes TensorBoard logs out of the box, so that is the default until someone argues for Weights & Biases or plain JSONL in `runs/`. Whatever is used, every run records the Showdown commit, the poke-env version, the opponent mix and its panel results.
+`battle_trainer.arena`. The built-in bots, Elo and 500-battle panels exist; what is missing is everything that runs battles at scale.
 
-## Arena
+1. Battle every built-in bot against every other over 500-battle panels; publish the table and Elo standings (ladder v0).
+2. Make `run_panel` run several battles concurrently and measure battles per minute.
+3. Add Metamon's released agents as the opponent tier after the built-in bots.
+4. Implement `ladder.run_ladder`: ranked games on the official server, with rating and replay links logged to JSONL, then a rating page on carletonai.com.
 
-*Runs the battles and keeps score. The best first stream for new members.*
+Week-4 milestone: ladder v0 with the built-in bots, rating page live. Read the [poke-env docs](https://poke-env.readthedocs.io/).
 
-Package: `battle_trainer.arena`. Already there as boilerplate, because the smoke test and CI need them: the built-in bots (`bots.py`), Elo (`elo.py`), panels with confidence intervals (`panel.py`). What remains is everything that runs and records battles at scale.
+## Ghosts: imitation copies of human players
 
-1. Battle every built-in bot against every other over 500-battle panels and publish the table and Elo standings in `docs/` (the first "ladder v0").
-2. Make `run_panel` run several battles concurrently (`max_concurrent_battles`) and measure battles per minute through the server. That number is the Engine stream's baseline too.
-3. Run Metamon's released agents on the local server as the next opponent tier (`bots.py` has the TODO); confirm which formats they cover, then add them to the panels and the Elo ladder.
-4. Implement `ladder.run_ladder` (`ladder.py`): play ranked games on the official server under the club account, log rating and replay links to JSONL.
-5. The rating page on carletonai.com: a static JSON the page fetches, then a weekly job.
+`battle_trainer.ghosts`. Pipeline: `scrape.py` → `parse.py` → `dataset.py` → `imitation.py`.
 
-Week-4 milestone: ladder v0 with the built-in bots, rating page live.
-
-## Ghosts
-
-*Imitation copies of human players, one per rating band.*
-
-Package: `battle_trainer.ghosts`. Pipeline: `scrape.py` → `parse.py` → `dataset.py` → `imitation.py`.
-
-1. Read Metamon's replay-parsing code and dataset first; decide what to reuse.
+1. Read Metamon's replay-parsing code and decide what to reuse.
 2. Scrape a few thousand Gen 1 random-battle replays with ratings into `data/replays/`.
-3. Parse one side of a replay into `(observation, action)` pairs with poke-env's `Battle` parser, using the Player's encoder and action indices so ghosts and Player share one action space.
-4. Train a first ghost with cross-entropy over legal actions; evaluate it as a `GhostPlayer` on a 500-battle panel against the heuristic bot.
+3. Parse one side of each replay into (observation, action) pairs using the Player's encoder and action indices, so ghosts and Player share one action space.
+4. Train a first ghost with cross-entropy over legal actions; evaluate it on a 500-battle panel against the heuristic bot.
 
-Week-4 milestone: one ghost that beats the heuristic bot.
+Week-4 milestone: one ghost that beats the heuristic bot. Read [Metamon](https://github.com/UT-Austin-RPL/metamon) and its [paper](https://arxiv.org/abs/2504.04395).
 
-## Player
+## Player: the bot we train
 
-*The bot we train.*
+`battle_trainer.player`. A Gen 1 env with a tiny v0 observation (`env.py`) and its `MaskablePPO` adapter (`ppo.py`) exist. PPO comes from Stable-Baselines3, which logs to TensorBoard.
 
-Package: `battle_trainer.player`. Already there: a Gen 1 `SinglesEnv` with a tiny v0 observation (`env.py`), the adapter that turns it into a `MaskablePPO` environment (`ppo.make_maskable_env`), and the action-mask helper for code outside SB3 (`policy.mask_logits`). PPO itself comes from Stable-Baselines3 (`sb3-contrib`'s `MaskablePPO`; decided Nov 2, 2026).
+1. Step `make_env(...)` against the local server with random legal actions and watch observations, masks and rewards flow.
+2. Run the `MaskablePPO` snippet at the top of `ppo.py` against the random bot; confirm a reward curve shows up in TensorBoard.
+3. Build the real state encoder (`encoder.py`): both teams, what the opponent has revealed, known moves, field state.
+4. Train against the random bot, then the max-damage bot. Report 500-battle panels.
 
-1. Run `make_env(make_bot("random", start_listening=False))` against the local server and step it with random legal actions to see observations (`obs["observation"]`), masks (`obs["action_mask"]`) and rewards flow.
-2. Run the `MaskablePPO` snippet at the top of `ppo.py` for a few thousand steps against the random bot; confirm a reward curve shows up in TensorBoard.
-3. Build the real state encoder (`encoder.py`) as an SB3 `BaseFeaturesExtractor`: species, HP, status, boosts and revealed flags for all twelve slots, known moves with PP, field state. Use Showdown's random-battle sets as a prior for unrevealed species.
-4. Train against the random bot, then the max-damage bot, from scratch. Report 500-battle panels with intervals.
+Week-4 milestone: beats the max-damage bot from scratch; week 8, the heuristic bot. Read [MaskablePPO](https://sb3-contrib.readthedocs.io/en/master/modules/ppo_mask.html) and Metamon.
 
-Week-4 milestone: beats the max-damage bot from scratch. Week 8: the heuristic bot.
+## Coach: decides what the Player practises
 
-## Coach
+`battle_trainer.coach`. The uniform baseline and the 50% uniform floor exist (`curriculum.py`).
 
-*Decides what the Player practises.*
+1. Build the held-out exam panel: fixed opponents and seeds the Coach can never sample from.
+2. Implement `WeaknessSampler` with its guardrails: 500-battle evidence, the floor, move on once fixed.
+3. Run the experiment: uniform mix versus Coach mix, same budget, same exam. The Coach stays only if it wins.
 
-Package: `battle_trainer.coach`. Already there: the uniform baseline and the 50% uniform floor (`curriculum.py`).
+Week-4 milestone: random sparring mix matches the fixed-opponent win rate. Read about [AlphaStar](https://deepmind.google/research/breakthroughs/alphastar/) league training.
 
-1. Build the held-out exam panel: a fixed set of opponents and seeds the Coach can never sample from. Everything the Coach does is judged on it.
-2. Implement `WeaknessSampler` with its guardrails (500-battle evidence, floor, move on once fixed).
-3. Run the experiment: uniform mix versus Coach mix, same budget, same exam. Through week 8 uniform is the baseline; the Coach stays only if it wins.
-4. Later: starting positions (resume battles from saved states), and for OU, `teambuilder.py`.
+## Engine: training without a server in the loop
 
-Week-4 milestone: random sparring mix matches the fixed-opponent win rate.
+`battle_trainer.engine`. Server configuration and the headless protocol notes exist.
 
-## Engine speed
-
-*Training never waits on a server.*
-
-Package: `battle_trainer.engine`. Already there: server configuration (`server.py`), the pinned Showdown commit, and the protocol notes for the headless CLI (`headless.py`).
-
-1. Measure battles per second through the server tier (with the Arena stream) so there is a baseline.
+1. Measure battles per second through the server (with Arena) as the baseline.
 2. Implement `HeadlessBattle` over `pokemon-showdown simulate-battle` and a runner that drives many subprocesses in parallel.
-3. Get `oak` (libpkmn) installed and running a Gen 1 battle on a Linux laptop; cross-check seeded battles against headless Showdown for parity.
-4. Expose both tiers behind the same interface the Player's env uses, and publish the throughput table.
+3. Get `oak` (libpkmn) running a Gen 1 battle on x86-64 Linux (`uv sync --extra engine`) and check seeded battles for parity against headless Showdown.
+4. Put both tiers behind the interface the Player's env uses; publish the throughput table.
 
-Week-4 milestone: training runs with no server in the loop.
-
-## Reading, by stream
-
-- All: [poke-env docs](https://poke-env.readthedocs.io/), especially the getting-started and RL examples.
-- Ghosts and Player: [Metamon paper](https://arxiv.org/abs/2504.04395) and [repo](https://github.com/UT-Austin-RPL/metamon).
-- Player: PPO (Schulman et al., 2017); [Stable-Baselines3 docs](https://stable-baselines3.readthedocs.io/) and [MaskablePPO in sb3-contrib](https://sb3-contrib.readthedocs.io/en/master/modules/ppo_mask.html).
-- Coach: [AlphaStar](https://deepmind.google/research/breakthroughs/alphastar/) league training; curriculum learning surveys.
-- Engine: [SIMULATOR.md](https://github.com/smogon/pokemon-showdown/blob/master/sim/SIMULATOR.md), [libpkmn design notes](https://github.com/pkmn/engine/blob/main/docs/DESIGN.md), [oak](https://github.com/pokemon-labs/oak).
+Week-4 milestone: training runs with no server in the loop. Read [SIMULATOR.md](https://github.com/smogon/pokemon-showdown/blob/master/sim/SIMULATOR.md), [libpkmn](https://github.com/pkmn/engine) and [oak](https://github.com/pokemon-labs/oak).
