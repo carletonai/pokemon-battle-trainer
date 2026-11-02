@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+build/
+dist/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Third-party checkouts (pinned by third_party/SHOWDOWN_COMMIT)
+third_party/pokemon-showdown/
+
+# Experiment outputs
+runs/
+checkpoints/
+replays/
+data/
+*.pt
+*.ckpt
+wandb/
+
+# Editors and OS
+.vscode/
+.idea/
+.DS_Store
+*.swp
+
+# Secrets
+.env
