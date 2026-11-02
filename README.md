@@ -50,7 +50,7 @@ To watch bots battle live, open `http://localhost:8000` in a browser. The server
 
 **Windows:** the shell scripts need Git Bash or WSL. The Python side runs natively.
 
-**GPU:** on Linux, `uv sync` installs CPU-only PyTorch (a tenth of the size, and training here is bound by simulator speed, not GPUs). For a CUDA build, change the `[tool.uv.sources]` block in `pyproject.toml` to a CUDA index per [uv's PyTorch guide](https://docs.astral.sh/uv/guides/integration/pytorch/), or use Kaggle Notebooks for free GPU hours, which is the plan.
+**PyTorch size:** `uv sync` installs the PyPI build of PyTorch. On Linux that bundles CUDA (about 3 GB, GPU-ready); macOS and Windows get the small CPU build. If the download is a problem on a Linux laptop without a GPU, the commented block in `pyproject.toml` switches Linux to CPU-only wheels per [uv's PyTorch guide](https://docs.astral.sh/uv/guides/integration/pytorch/); re-lock and commit. Training here is bound by simulator speed, not GPUs, and Kaggle Notebooks give free GPU hours.
 
 **libpkmn (fast Gen 1 engine):** `uv sync --extra engine` installs `oak`. Wheels exist only for x86-64 Linux with glibc 2.34+ (Ubuntu 22.04 or newer; no ARM); see `src/battle_trainer/engine/libpkmn.py`.
 
@@ -86,7 +86,7 @@ Details and first tasks per stream: [docs/WORKSTREAMS.md](docs/WORKSTREAMS.md). 
 
 ## Rules we hold ourselves to
 
-- **Reproducible numbers.** Every reported result names the Showdown commit (`third_party/SHOWDOWN_COMMIT`) and the poke-env version it was measured with. `arena.panel.PanelResult` prints both with every win rate.
+- **Reproducible numbers.** Every reported result names the Showdown commit (`third_party/SHOWDOWN_COMMIT`) and the poke-env version it was measured with (pinned in `uv.lock`). `arena.panel.PanelResult` prints both with every win rate.
 - **500-battle panels.** Luck is large in Pokémon. Win rates come with a confidence interval (`arena.panel`), never from 50 battles.
 - **One ladder account.** Ladder runs use the club's registered Showdown account, never stall the timer, and stay out of chat rooms. Bots are allowed on the ladder because they see what a human sees; keep it that way.
 - **No artwork.** The public rating page shows the bot's name, rating and replay links. No Pokémon sprites or art in this repo or on the page.

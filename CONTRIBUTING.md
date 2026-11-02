@@ -65,7 +65,7 @@ Subject in the imperative, lowercase, no period, about 72 characters. Use the bo
 - Python 3.11+, type hints on public functions, docstrings that explain *why* and point at the plan where it matters.
 - `ruff` lints and formats (`make format`). Line length is 100.
 - No new top-level dependency without a line in the PR saying why. `uv add <package>` updates `pyproject.toml` and `uv.lock` together; commit both.
-- `uv.lock` is not committed yet (the environment that made the scaffold could not reach the PyTorch index). The first person whose `uv sync` succeeds commits the `uv.lock` it produced, and CI then switches to `uv sync --locked`.
+- `uv.lock` is committed and CI installs with `uv sync --locked`, which fails if `pyproject.toml` and the lock disagree. After changing a dependency, run `uv lock` and commit the lock with it.
 - Shared code goes in the package; one-off experiments go in `scripts/` or a notebook, and notebooks are cleared of outputs before commit.
 
 ## Tests
