@@ -38,11 +38,11 @@ jobs:
       - uses: astral-sh/setup-uv@v10.3.3
         with:
           enable-cache: true
-      - name: Cache Showdown build
+      - name: Cache npm downloads for Showdown
         uses: actions/cache@v6
         with:
-          path: third_party/pokemon-showdown
-          key: showdown-${{ runner.os }}-${{ hashFiles('third_party/SHOWDOWN_COMMIT') }}
+          path: ~/.npm
+          key: showdown-npm-${{ runner.os }}-${{ hashFiles('third_party/SHOWDOWN_COMMIT') }}
       - name: Build Showdown at the pinned commit
         run: scripts/setup_showdown.sh
       - name: Install

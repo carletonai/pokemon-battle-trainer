@@ -79,6 +79,8 @@ Subject in the imperative, lowercase, no period, about 72 characters. Use the bo
 - Panels are 500 battles unless there is a stated reason.
 - Replays, datasets, checkpoints and logs live in `data/`, `checkpoints/` and `runs/`, all git-ignored. Share large files through the channel or a shared drive, not git.
 
-## Bumping Showdown or poke-env
+## Bumping Showdown, poke-env or ruff
 
 Showdown is pinned in `third_party/SHOWDOWN_COMMIT`; poke-env in `pyproject.toml`. Bump either in its own PR (`chore(engine): bump showdown to <sha>`), run the smoke battle, and say in the PR what changed upstream. Results measured before and after a bump are not comparable.
+
+Ruff is pinned twice, in `pyproject.toml` (what CI runs) and in `.pre-commit-config.yaml` (what runs on your machine). Bump both in the same commit so the two never disagree.
