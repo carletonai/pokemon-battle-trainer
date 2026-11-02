@@ -60,7 +60,7 @@ Nobody plays games by hand. Pokémon Showdown is the engine; the "server" is a w
 | --- | --- | --- |
 | Showdown server + poke-env | The public simulator's server run locally with rate limits off; poke-env hands a Python bot the battle state and takes back a move. Ships three built-in bots | Development, the bot ladder, and the official ladder against humans |
 | Headless Showdown | `pokemon-showdown simulate-battle`: the same simulator over stdin/stdout, one subprocess per battle, reproducible with a seed, no server | Validation and training without websocket round trips |
-| libpkmn via oak | A Zig battle engine that, with one build flag, matches Showdown's Gen 1 behaviour exactly; oak wraps it in Python | Training throughput. Gen 1 only, Linux wheels only, and libpkmn builds only against the Zig master release, so budget a week of toolchain work |
+| libpkmn via oak | A Zig battle engine that, with one build flag, matches Showdown's Gen 1 behaviour exactly; oak wraps it in Python | Training throughput. Gen 1 only, wheels only for x86-64 Linux (glibc 2.34+), and libpkmn builds only against the Zig master release, so budget a week of toolchain work |
 
 ## Formats, in order
 

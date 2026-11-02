@@ -33,7 +33,8 @@ uv run pre-commit install
 # 2. Pokémon Showdown, built at the commit pinned in third_party/SHOWDOWN_COMMIT
 scripts/setup_showdown.sh
 
-# 3. A local server, in its own terminal. Leave it running.
+# 3. A local server, in its own terminal. Leave it running; it is ready when it prints
+#    "Worker 1 now listening on 0.0.0.0:8000".
 scripts/start_showdown.sh
 
 # 4. Two built-in bots battle on it. If this prints a win rate, the stack works.
@@ -45,13 +46,13 @@ uv run pytest
 
 `make help` lists the same steps as Make targets (`make setup`, `make showdown`, `make server`, `make smoke`, `make test`, `make lint`, `make format`).
 
-To watch bots battle live, open `https://play.pokemonshowdown.com/~~localhost:8000` in a browser: the official client connecting to your local server.
+To watch bots battle live, open `http://localhost:8000` in a browser. The server redirects you to `https://localhost.psim.us`, the official client pointed at your local server. If that fails in Firefox, try Chrome.
 
 **Windows:** the shell scripts need Git Bash or WSL. The Python side runs natively.
 
 **GPU:** on Linux, `uv sync` installs CPU-only PyTorch (a tenth of the size, and training here is bound by simulator speed, not GPUs). For a CUDA build, change the `[tool.uv.sources]` block in `pyproject.toml` to a CUDA index per [uv's PyTorch guide](https://docs.astral.sh/uv/guides/integration/pytorch/), or use Kaggle Notebooks for free GPU hours, which is the plan.
 
-**libpkmn (fast Gen 1 engine):** `uv sync --extra engine` installs `oak`. Linux only; see `src/battle_trainer/engine/libpkmn.py`.
+**libpkmn (fast Gen 1 engine):** `uv sync --extra engine` installs `oak`. Wheels exist only for x86-64 Linux with glibc 2.34+ (Ubuntu 22.04 or newer; no ARM); see `src/battle_trainer/engine/libpkmn.py`.
 
 ## Repository map
 
@@ -85,7 +86,7 @@ Details and first tasks per stream: [docs/WORKSTREAMS.md](docs/WORKSTREAMS.md). 
 
 ## Rules we hold ourselves to
 
-- **Reproducible numbers.** Every reported result names the Showdown commit (`third_party/SHOWDOWN_COMMIT`) and the poke-env version (`uv.lock`) it was measured with.
+- **Reproducible numbers.** Every reported result names the Showdown commit (`third_party/SHOWDOWN_COMMIT`) and the poke-env version it was measured with. `arena.panel.PanelResult` prints both with every win rate.
 - **500-battle panels.** Luck is large in Pokémon. Win rates come with a confidence interval (`arena.panel`), never from 50 battles.
 - **One ladder account.** Ladder runs use the club's registered Showdown account, never stall the timer, and stay out of chat rooms. Bots are allowed on the ladder because they see what a human sees; keep it that way.
 - **No artwork.** The public rating page shows the bot's name, rating and replay links. No Pokémon sprites or art in this repo or on the page.

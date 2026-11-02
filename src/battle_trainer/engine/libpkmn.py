@@ -3,7 +3,8 @@
 libpkmn (https://github.com/pkmn/engine) is a Zig battle engine that, built with the
 Showdown-compatibility flag, matches Pokémon Showdown's Gen 1 behaviour exactly. ``oak``
 (https://github.com/pokemon-labs/oak, PyPI ``oak-lab``) wraps it for Python. Install with
-``uv sync --extra engine`` (Linux only).
+``uv sync --extra engine``. Wheels exist only for x86-64 Linux with glibc 2.34+ (Ubuntu
+22.04 or newer); there are no ARM or macOS builds.
 
 Known costs, from the planning notes: Gen 1 only, Linux wheels only, and libpkmn builds
 only against the Zig master release, so budget a week for toolchain work.

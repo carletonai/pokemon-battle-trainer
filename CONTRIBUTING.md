@@ -22,6 +22,7 @@ ghosts/replay-parser
 player/state-encoder
 coach/weakness-sampler
 engine/headless-runner
+tooling/pin-ruff
 ```
 
 `main` is protected: changes land by pull request.
@@ -42,7 +43,7 @@ We use [Conventional Commits](https://www.conventionalcommits.org/): `<type>(<sc
 | `ci` | CI pipeline |
 | `style` | Formatting only |
 
-The scope is the workstream or module: `arena`, `ghosts`, `player`, `coach`, `engine`, `ci`, `docs`.
+The scope is the workstream or module: `arena`, `ghosts`, `player`, `coach`, `engine`, `tooling`, `ci`, `docs`.
 
 ```
 feat(arena): log replay links from ladder runs
@@ -64,6 +65,7 @@ Subject in the imperative, lowercase, no period, about 72 characters. Use the bo
 - Python 3.12+, type hints on public functions, docstrings that explain *why* and point at the plan where it matters.
 - `ruff` lints and formats (`make format`). Line length is 100.
 - No new top-level dependency without a line in the PR saying why. `uv add <package>` updates `pyproject.toml` and `uv.lock` together; commit both.
+- `uv.lock` is not committed yet (the environment that made the scaffold could not reach the PyTorch index). The first person whose `uv sync` succeeds commits the `uv.lock` it produced, and CI then switches to `uv sync --locked`.
 - Shared code goes in the package; one-off experiments go in `scripts/` or a notebook, and notebooks are cleared of outputs before commit.
 
 ## Tests
@@ -73,7 +75,7 @@ Subject in the imperative, lowercase, no period, about 72 characters. Use the bo
 
 ## Experiments and results
 
-- A number in a write-up or the channel comes with: the Showdown commit (`third_party/SHOWDOWN_COMMIT`), the poke-env version (`uv.lock`), the opponent, and the panel size with its interval. `arena.panel.PanelResult` prints all of this.
+- A number in a write-up or the channel comes with: the Showdown commit (`third_party/SHOWDOWN_COMMIT`), the poke-env version, the opponent, and the panel size with its interval. `arena.panel.PanelResult` prints all of this; paste its output.
 - Panels are 500 battles unless there is a stated reason.
 - Replays, datasets, checkpoints and logs live in `data/`, `checkpoints/` and `runs/`, all git-ignored. Share large files through the channel or a shared drive, not git.
 
