@@ -15,11 +15,11 @@ htmlcov/
 # Third-party checkouts (pinned by third_party/SHOWDOWN_COMMIT)
 third_party/pokemon-showdown/
 
-# Experiment outputs
-runs/
-checkpoints/
-replays/
-data/
+# Experiment outputs (repo root only; tests/data and the like stay tracked)
+/runs/
+/checkpoints/
+/replays/
+/data/
 *.pt
 *.ckpt
 wandb/

@@ -3,8 +3,9 @@
 #
 # Usage:  scripts/setup_showdown.sh
 #
-# Requires Node >= 22.18 (https://nodejs.org). Safe to re-run: an existing checkout is
-# fetched and reset to the pinned commit, then rebuilt.
+# Requires Node >= 22.18 (https://nodejs.org). Safe to re-run: an existing clean checkout
+# is moved to the pinned commit and rebuilt. If you have edited files inside the checkout,
+# stash or discard them first (or set SHOWDOWN_FORCE=1 to throw them away).
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -17,9 +18,10 @@ if ! command -v node >/dev/null 2>&1; then
   exit 1
 fi
 
-NODE_MAJOR="$(node -p 'process.versions.node.split(".")[0]')"
-if [ "$NODE_MAJOR" -lt 22 ]; then
-  echo "error: Node >= 22.18 required, found $(node --version)." >&2
+NODE_MIN="22.18.0"
+NODE_VERSION="$(node -p 'process.versions.node')"
+if [ "$(printf '%s\n' "$NODE_MIN" "$NODE_VERSION" | sort -V | head -n1)" != "$NODE_MIN" ]; then
+  echo "error: Node >= $NODE_MIN required, found $(node --version)." >&2
   exit 1
 fi
 
@@ -31,7 +33,11 @@ if [ ! -d "$SHOWDOWN_DIR/.git" ]; then
 fi
 # A shallow fetch of just the pinned commit keeps the download small.
 git -C "$SHOWDOWN_DIR" fetch -q --depth 1 origin "$SHOWDOWN_COMMIT"
-git -C "$SHOWDOWN_DIR" checkout -q --detach FETCH_HEAD
+if ! git -C "$SHOWDOWN_DIR" checkout -q --detach ${SHOWDOWN_FORCE:+--force} FETCH_HEAD; then
+  echo "error: could not move $SHOWDOWN_DIR to $SHOWDOWN_COMMIT." >&2
+  echo "       You probably have local edits there. Stash or discard them, or re-run with SHOWDOWN_FORCE=1." >&2
+  exit 1
+fi
 
 echo "==> npm ci (dependencies from Showdown's lockfile; a few minutes the first time)"
 (cd "$SHOWDOWN_DIR" && npm ci --no-audit --no-fund)
