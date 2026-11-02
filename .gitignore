@@ -22,7 +22,7 @@ third_party/pokemon-showdown/
 /data/
 *.pt
 *.ckpt
-# Weights & Biases, if it is picked as the experiment tracker (docs/WORKSTREAMS.md)
+# Weights & Biases, if it ever replaces SB3's TensorBoard logs (see TODO(player) in src/battle_trainer/player/self_play.py)
 wandb/
 
 # Editors and OS

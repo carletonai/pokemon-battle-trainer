@@ -16,6 +16,7 @@ dependencies = [
   "torch>=2.8",
   "stable-baselines3>=2.9.2,<3",
   "sb3-contrib>=2.9.2,<3",
+  "tensorboard>=2.21.0",  # SB3 raises ImportError on tensorboard_log= without it
 ]
 
 [project.optional-dependencies]

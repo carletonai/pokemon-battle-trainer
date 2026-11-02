@@ -103,6 +103,7 @@ Offline Elo is our own ladder on our laptops: bots, ghosts and Metamon's agents 
 - poke-env: [docs](https://poke-env.readthedocs.io/), [GitHub](https://github.com/hsahovic/poke-env)
 - Pokémon Showdown: [GitHub](https://github.com/smogon/pokemon-showdown), [SIMULATOR.md](https://github.com/smogon/pokemon-showdown/blob/master/sim/SIMULATOR.md)
 - libpkmn: [pkmn/engine](https://github.com/pkmn/engine), [design notes](https://github.com/pkmn/engine/blob/main/docs/DESIGN.md); oak: [GitHub](https://github.com/pokemon-labs/oak), [PyPI](https://pypi.org/project/oak-lab/)
+- Stable-Baselines3: [docs](https://stable-baselines3.readthedocs.io/), [MaskablePPO in sb3-contrib](https://sb3-contrib.readthedocs.io/en/master/modules/ppo_mask.html)
 - Metamon: [GitHub](https://github.com/UT-Austin-RPL/metamon), [paper (RLJ 2025)](https://arxiv.org/abs/2504.04395), [parsed replays on Hugging Face](https://huggingface.co/datasets/jakegrigsby/metamon-parsed-replays)
 - [MIT thesis: RL agent at rank 8 on the Gen 4 random-battles ladder](https://dspace.mit.edu/handle/1721.1/153888)
 - [AlphaStar](https://deepmind.google/research/breakthroughs/alphastar/), the league and exploiter agents behind the Coach
