@@ -104,4 +104,6 @@ Details and first tasks per stream: [docs/WORKSTREAMS.md](docs/WORKSTREAMS.md). 
 
 Everything about the project lives in `#pokemon-battle-trainer` on the CAIS Discord. React ⚡ in `#roles` to get pinged for meetings. Ping Jeremy in the channel for access to this repo.
 
-This is a student project with no affiliation to Nintendo, Game Freak or The Pokémon Company. Pokémon Showdown and poke-env are MIT-licensed open-source projects.
+## License
+
+[MIT](LICENSE). This is a student project with no affiliation to Nintendo, Game Freak or The Pokémon Company. Pokémon Showdown and poke-env are MIT-licensed open-source projects too.
