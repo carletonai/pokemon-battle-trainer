@@ -17,8 +17,8 @@ def test_module_imports(name: str):
     try:
         importlib.import_module(name)
     except ModuleNotFoundError as exc:
-        if exc.name == "torch":
-            pytest.skip("torch is not installed")
+        if exc.name in ("torch", "stable_baselines3", "sb3_contrib"):
+            pytest.skip(f"{exc.name} is not installed")
         raise
 
 

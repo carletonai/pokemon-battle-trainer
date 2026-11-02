@@ -62,7 +62,7 @@ src/battle_trainer/
   engine/          simulator tiers: server (poke-env), headless CLI, libpkmn via oak
   arena/           built-in bots, 500-battle panels, Elo ladder, official-ladder runner
   ghosts/          replay scraping and parsing, imitation dataset, GhostPlayer
-  player/          Gen 1 env, state encoder, masked actor-critic, PPO, self-play pool
+  player/          Gen 1 env, state encoder, MaskablePPO (Stable-Baselines3) entry point, self-play pool
   coach/           opponent sampling (uniform baseline, weakness-weighted), team builder
 scripts/           setup_showdown.sh, start_showdown.sh, smoke_battle.py
 tests/             unit tests; tests marked `showdown` need the local server
@@ -96,6 +96,7 @@ Details and first tasks per stream: [docs/WORKSTREAMS.md](docs/WORKSTREAMS.md). 
 
 - [poke-env documentation](https://poke-env.readthedocs.io/) and [repo](https://github.com/hsahovic/poke-env): the Python layer between a bot and Showdown
 - [Pokémon Showdown](https://github.com/smogon/pokemon-showdown), especially [sim/SIMULATOR.md](https://github.com/smogon/pokemon-showdown/blob/master/sim/SIMULATOR.md) for the headless protocol
+- [Stable-Baselines3](https://stable-baselines3.readthedocs.io/) and [MaskablePPO in sb3-contrib](https://sb3-contrib.readthedocs.io/en/master/modules/ppo_mask.html): the PPO implementation the Player trains with
 - [Metamon](https://github.com/UT-Austin-RPL/metamon) ([paper](https://arxiv.org/abs/2504.04395)): the prior work this project builds on and measures against
 - [libpkmn](https://github.com/pkmn/engine) and [oak](https://github.com/pokemon-labs/oak): the fast Gen 1 engine
 - [AlphaStar](https://deepmind.google/research/breakthroughs/alphastar/): the league and exploiter agents the Coach idea comes from

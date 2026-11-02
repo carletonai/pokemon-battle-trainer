@@ -7,15 +7,18 @@ therefore holds three kinds of opponent, and the Coach decides the mix:
     ghosts        imitation bots per rating band (``battle_trainer.ghosts``)
     bots          the built-in baselines (``battle_trainer.arena.bots``)
 
-TODO(player): implement ``OpponentPool`` and ``train``.
-  1. ``OpponentPool.add(name, make_player)`` and ``sample(sampler)`` where ``sampler`` is a
-     ``battle_trainer.coach.curriculum`` sampler (uniform is the baseline).
-  2. A training loop: build ``player.env.make_env(opponent)``, collect a rollout,
-     ``ppo.ppo_update``, evaluate on a held-out panel the Coach cannot pick from.
+TODO(player): implement ``OpponentPool.sample`` and ``train``.
+  1. ``OpponentPool.sample(sampler)`` where ``sampler`` is a ``battle_trainer.coach.curriculum``
+     sampler (uniform is the baseline).
+  2. An SB3 callback (``BaseCallback._on_rollout_end``) that swaps the environment's
+     opponent between rollouts (``env.set_wrapper_attr("opponent", ...)`` on the
+     ``SingleAgentWrapper``); ``CheckpointCallback`` adds past selves to the pool every K
+     updates. ``ppo.py`` has the ``MaskablePPO`` call this wraps.
   3. Checkpoints to ``checkpoints/`` (git-ignored) with the Showdown commit and poke-env
      version written alongside, so every result is reproducible.
-  4. Pick the experiment tracker (W&B, TensorBoard or JSONL in ``runs/``; open decision)
-     and log the opponent mix and panel results of every run with it.
+  4. Evaluate on the held-out panel with ``arena.panel.run_panel`` and log the opponent
+     mix and panel results of every run. SB3 writes TensorBoard logs out of the box
+     (``tensorboard_log=``), the default tracker until someone argues for another.
 """
 
 from __future__ import annotations

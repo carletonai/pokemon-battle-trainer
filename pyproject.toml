@@ -11,8 +11,10 @@ dependencies = [
   "poke-env>=0.16.1,<0.17",
   "gymnasium>=1.3",  # poke-env 0.16.1 pins gymnasium==1.3.0 and websockets==16.1.1; bump with poke-env
   "numpy>=2.0",
-  # Learning. Linux installs CPU-only wheels by default (see [tool.uv.sources] below).
-  "torch>=2.5",
+  # Learning. PPO comes from Stable-Baselines3; MaskablePPO lives in sb3-contrib.
+  "torch>=2.8",
+  "stable-baselines3>=2.9.2,<3",
+  "sb3-contrib>=2.9.2,<3",
 ]
 
 [project.optional-dependencies]
