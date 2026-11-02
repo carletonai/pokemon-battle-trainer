@@ -4,16 +4,19 @@ Pick one, say so in `#pokemon-battle-trainer`, and take the first unclaimed task
 
 Before anything else, get the stack running on your laptop ([README: Getting started](../README.md#getting-started)). The smoke battle proving the server, poke-env and the bots all talk to each other is the first thing every stream needs.
 
+Open decision for the Player and Coach streams: experiment tracking (Weights & Biases, TensorBoard, or plain JSONL in `runs/`). Whatever is picked, every run records the Showdown commit, the poke-env version, the opponent mix and its panel results.
+
 ## Arena
 
 *Runs the battles and keeps score. The best first stream for new members.*
 
-Package: `battle_trainer.arena`. Already there: the built-in bots (`bots.py`), Elo (`elo.py`), panels with confidence intervals (`panel.py`).
+Package: `battle_trainer.arena`. Already there as boilerplate, because the smoke test and CI need them: the built-in bots (`bots.py`), Elo (`elo.py`), panels with confidence intervals (`panel.py`). What remains is everything that runs and records battles at scale.
 
 1. Battle every built-in bot against every other over 500-battle panels and publish the table and Elo standings in `docs/` (the first "ladder v0").
 2. Make `run_panel` run several battles concurrently (`max_concurrent_battles`) and measure battles per minute through the server. That number is the Engine stream's baseline too.
-3. Implement `ladder.run_ladder` (`ladder.py`): play ranked games on the official server under the club account, log rating and replay links to JSONL.
-4. The rating page on carletonai.com: a static JSON the page fetches, then a weekly job.
+3. Run Metamon's released agents on the local server as the next opponent tier (`bots.py` has the TODO); confirm which formats they cover, then add them to the panels and the Elo ladder.
+4. Implement `ladder.run_ladder` (`ladder.py`): play ranked games on the official server under the club account, log rating and replay links to JSONL.
+5. The rating page on carletonai.com: a static JSON the page fetches, then a weekly job.
 
 Week-4 milestone: ladder v0 with the built-in bots, rating page live.
 

@@ -51,7 +51,7 @@ fix(player): mask switches while trapped
 perf(engine): batch headless battles across processes
 ```
 
-Subject in the imperative, lowercase, no period, about 72 characters. Use the body to say *why*. Commit as you go rather than one commit for everything, and do not add `Co-authored-by` or `Signed-off-by` trailers.
+Subject in the imperative, lowercase, no period, about 72 characters. Use the body to say *why*. Commit as you go rather than one commit for everything. Credit a human you paired with via `Co-authored-by`; do not add trailers that credit AI tools as authors.
 
 ## Pull requests
 
@@ -62,7 +62,7 @@ Subject in the imperative, lowercase, no period, about 72 characters. Use the bo
 
 ## Code
 
-- Python 3.12+, type hints on public functions, docstrings that explain *why* and point at the plan where it matters.
+- Python 3.11+, type hints on public functions, docstrings that explain *why* and point at the plan where it matters.
 - `ruff` lints and formats (`make format`). Line length is 100.
 - No new top-level dependency without a line in the PR saying why. `uv add <package>` updates `pyproject.toml` and `uv.lock` together; commit both.
 - `uv.lock` is not committed yet (the environment that made the scaffold could not reach the PyTorch index). The first person whose `uv sync` succeeds commits the `uv.lock` it produced, and CI then switches to `uv sync --locked`.
@@ -78,6 +78,10 @@ Subject in the imperative, lowercase, no period, about 72 characters. Use the bo
 - A number in a write-up or the channel comes with: the Showdown commit (`third_party/SHOWDOWN_COMMIT`), the poke-env version, the opponent, and the panel size with its interval. `arena.panel.PanelResult` prints all of this; paste its output.
 - Panels are 500 battles unless there is a stated reason.
 - Replays, datasets, checkpoints and logs live in `data/`, `checkpoints/` and `runs/`, all git-ignored. Share large files through the channel or a shared drive, not git.
+
+## Choices made in this scaffold
+
+The planning notes settled the game, the framework and the libraries (Showdown, poke-env, PyTorch, PPO). The following were chosen when the repo was set up and are open to change by PR with a reason: Python 3.11+ as the floor, `uv` as the package manager, `ruff` with line length 100, `pre-commit`, Conventional Commits with the type table above, `<stream>/<description>` branch names, one approving review before merge, CPU-only Torch on Linux by default, and leaving `uv.lock` to the first member who can produce it.
 
 ## Bumping Showdown, poke-env or ruff
 

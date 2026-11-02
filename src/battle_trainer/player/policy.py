@@ -33,7 +33,10 @@ def mask_logits(logits: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
 
 
 class MaskedActorCritic(nn.Module):
-    """Policy and value heads over an encoded state. Not implemented yet."""
+    """Skeleton: ``forward`` works over a flat observation.
+
+    TODO(player): swap the trunk for ``encoder.StateEncoder`` and add ``act`` / ``evaluate``.
+    """
 
     def __init__(self, in_dim: int, hidden: int = 256, num_actions: int = NUM_ACTIONS) -> None:
         super().__init__()

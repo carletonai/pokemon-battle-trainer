@@ -22,6 +22,7 @@ third_party/pokemon-showdown/
 /data/
 *.pt
 *.ckpt
+# Weights & Biases, if it is picked as the experiment tracker (docs/WORKSTREAMS.md)
 wandb/
 
 # Editors and OS
