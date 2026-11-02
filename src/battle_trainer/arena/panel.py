@@ -7,12 +7,23 @@ battles; this module makes the size explicit and the interval visible.
 
 from __future__ import annotations
 
+import importlib.metadata
 import math
 from dataclasses import dataclass
 
 from poke_env.player import Player
 
 from battle_trainer.config import PANEL_SIZE
+from battle_trainer.engine.headless import pinned_showdown_commit
+
+
+def provenance() -> str:
+    """The simulator and client versions a result was measured with, for write-ups."""
+    try:
+        showdown = pinned_showdown_commit()[:10]
+    except OSError:
+        showdown = "unknown"
+    return f"showdown {showdown}, poke-env {importlib.metadata.version('poke-env')}"
 
 
 @dataclass(frozen=True)
@@ -41,7 +52,7 @@ class PanelResult:
         return (
             f"{self.player} vs {self.opponent}: {self.win_rate:.1%} "
             f"[{lo:.1%}, {hi:.1%}] over {self.n} battles "
-            f"({self.wins}W {self.losses}L {self.ties}T)"
+            f"({self.wins}W {self.losses}L {self.ties}T) | {provenance()}"
         )
 
 

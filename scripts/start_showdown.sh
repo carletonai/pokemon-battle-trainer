@@ -16,5 +16,6 @@ if [ ! -f "$SHOWDOWN_DIR/pokemon-showdown" ]; then
   exit 1
 fi
 
+# Usage per the launcher: pokemon-showdown start [--skip-build] [PORT]
 cd "$SHOWDOWN_DIR"
-exec node pokemon-showdown start --no-security --port "$PORT"
+exec node pokemon-showdown start --no-security "$PORT"

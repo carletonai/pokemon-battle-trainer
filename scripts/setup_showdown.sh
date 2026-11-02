@@ -33,8 +33,11 @@ fi
 git -C "$SHOWDOWN_DIR" fetch -q --depth 1 origin "$SHOWDOWN_COMMIT"
 git -C "$SHOWDOWN_DIR" checkout -q --detach FETCH_HEAD
 
-echo "==> npm install (this builds the simulator; a few minutes the first time)"
-(cd "$SHOWDOWN_DIR" && npm install --no-audit --no-fund)
+echo "==> npm ci (dependencies from Showdown's lockfile; a few minutes the first time)"
+(cd "$SHOWDOWN_DIR" && npm ci --no-audit --no-fund)
+
+echo "==> node build (compiles the simulator so the first server start is quick)"
+(cd "$SHOWDOWN_DIR" && node build)
 
 if [ ! -f "$SHOWDOWN_DIR/config/config.js" ]; then
   cp "$SHOWDOWN_DIR/config/config-example.js" "$SHOWDOWN_DIR/config/config.js"
