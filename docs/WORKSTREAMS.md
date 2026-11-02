@@ -4,7 +4,7 @@ Pick one, say so in `#pokemon-battle-trainer`, and take the first unclaimed task
 
 Before anything else, get the stack running on your laptop ([README: Getting started](../README.md#getting-started)). The smoke battle proving the server, poke-env and the bots all talk to each other is the first thing every stream needs.
 
-Open decision for the Player and Coach streams: experiment tracking (Weights & Biases, TensorBoard, or plain JSONL in `runs/`). Whatever is picked, every run records the Showdown commit, the poke-env version, the opponent mix and its panel results.
+Open decision for the Player and Coach streams: experiment tracking. Stable-Baselines3 writes TensorBoard logs out of the box, so that is the default until someone argues for Weights & Biases or plain JSONL in `runs/`. Whatever is used, every run records the Showdown commit, the poke-env version, the opponent mix and its panel results.
 
 ## Arena
 
@@ -37,11 +37,11 @@ Week-4 milestone: one ghost that beats the heuristic bot.
 
 *The bot we train.*
 
-Package: `battle_trainer.player`. Already there: a Gen 1 `SinglesEnv` with a tiny v0 observation (`env.py`), action masking (`policy.mask_logits`), and a network skeleton.
+Package: `battle_trainer.player`. Already there: a Gen 1 `SinglesEnv` with a tiny v0 observation (`env.py`), the adapter that turns it into a `MaskablePPO` environment (`ppo.make_maskable_env`), and the action-mask helper for code outside SB3 (`policy.mask_logits`). PPO itself comes from Stable-Baselines3 (`sb3-contrib`'s `MaskablePPO`; decided Nov 2, 2026).
 
 1. Run `make_env(make_bot("random", start_listening=False))` against the local server and step it with random legal actions to see observations (`obs["observation"]`), masks (`obs["action_mask"]`) and rewards flow.
-2. Decide hand-rolled PPO versus a library (`ppo.py` has the trade-off); say which in the channel.
-3. Build the real state encoder (`encoder.py`): species, HP, status, boosts and revealed flags for all twelve slots, known moves with PP, field state. Use Showdown's random-battle sets as a prior for unrevealed species.
+2. Run the `MaskablePPO` snippet at the top of `ppo.py` for a few thousand steps against the random bot; confirm a reward curve shows up in TensorBoard.
+3. Build the real state encoder (`encoder.py`) as an SB3 `BaseFeaturesExtractor`: species, HP, status, boosts and revealed flags for all twelve slots, known moves with PP, field state. Use Showdown's random-battle sets as a prior for unrevealed species.
 4. Train against the random bot, then the max-damage bot, from scratch. Report 500-battle panels with intervals.
 
 Week-4 milestone: beats the max-damage bot from scratch. Week 8: the heuristic bot.
@@ -76,6 +76,6 @@ Week-4 milestone: training runs with no server in the loop.
 
 - All: [poke-env docs](https://poke-env.readthedocs.io/), especially the getting-started and RL examples.
 - Ghosts and Player: [Metamon paper](https://arxiv.org/abs/2504.04395) and [repo](https://github.com/UT-Austin-RPL/metamon).
-- Player: PPO (Schulman et al., 2017), and any clear single-file PPO implementation with action masking.
+- Player: PPO (Schulman et al., 2017); [Stable-Baselines3 docs](https://stable-baselines3.readthedocs.io/) and [MaskablePPO in sb3-contrib](https://sb3-contrib.readthedocs.io/en/master/modules/ppo_mask.html).
 - Coach: [AlphaStar](https://deepmind.google/research/breakthroughs/alphastar/) league training; curriculum learning surveys.
 - Engine: [SIMULATOR.md](https://github.com/smogon/pokemon-showdown/blob/master/sim/SIMULATOR.md), [libpkmn design notes](https://github.com/pkmn/engine/blob/main/docs/DESIGN.md), [oak](https://github.com/pokemon-labs/oak).

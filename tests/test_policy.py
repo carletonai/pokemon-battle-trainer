@@ -21,12 +21,3 @@ def test_mask_logits_zeroes_illegal_probabilities():
 def test_mask_logits_rejects_all_illegal_row():
     with pytest.raises(ValueError):
         policy.mask_logits(torch.zeros(1, NUM_ACTIONS), torch.zeros(1, NUM_ACTIONS))
-
-
-def test_actor_critic_shapes():
-    net = policy.MaskedActorCritic(in_dim=14)
-    obs = torch.randn(5, 14)
-    mask = torch.ones(5, NUM_ACTIONS)
-    logits, value = net(obs, mask)
-    assert logits.shape == (5, NUM_ACTIONS)
-    assert value.shape == (5,)

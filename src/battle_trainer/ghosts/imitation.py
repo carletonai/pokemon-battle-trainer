@@ -1,7 +1,7 @@
 """Train one ghost per rating band, and wrap a trained ghost as a poke-env ``Player``.
 
 TODO(ghosts):
-  1. ``train_ghost``: cross-entropy over legal actions (mask illegal ones) on
+  1. ``train_ghost``: cross-entropy over legal actions (``player.policy.mask_logits``) on
      ``ReplayDataset``; report top-1 accuracy on held-out battles per band.
   2. ``GhostPlayer``: a ``poke_env.player.Player`` whose ``choose_move`` encodes the
      battle with the shared encoder, runs the model, and returns the argmax (or a

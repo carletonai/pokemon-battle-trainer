@@ -81,7 +81,7 @@ Subject in the imperative, lowercase, no period, about 72 characters. Use the bo
 
 ## Choices made in this scaffold
 
-The planning notes settled the game, the framework and the libraries (Showdown, poke-env, PyTorch, PPO). The following were chosen when the repo was set up and are open to change by PR with a reason: Python 3.11+ as the floor, `uv` as the package manager, `ruff` with line length 100, `pre-commit`, Conventional Commits with the type table above, `<stream>/<description>` branch names, one approving review before merge, CPU-only Torch on Linux by default, and leaving `uv.lock` to the first member who can produce it.
+The planning notes settled the game, the framework and the libraries (Showdown, poke-env, PyTorch, PPO); the project lead then picked the MIT license and Stable-Baselines3 (sb3-contrib's `MaskablePPO`) for PPO on Nov 2, 2026. The following were chosen when the repo was set up and are open to change by PR with a reason: Python 3.11+ as the floor, `uv` as the package manager with `uv.lock` committed, `ruff` with line length 100, `pre-commit`, Conventional Commits with the type table above, `<stream>/<description>` branch names, one approving review before merge, and PyTorch from PyPI (CUDA-bundled on Linux) so the lockfile can be produced anywhere.
 
 ## Bumping Showdown, poke-env or ruff
 
