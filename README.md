@@ -6,11 +6,11 @@ We haven't started building yet. For now, the one thing to do here is get some r
 
 ## Join
 
-Everything happens in `#pokemon-battle-trainer` on the CAIS Discord. React ⚡ in `#roles` to get meeting pings, and ask Jeremy there to add you to this repo.
+Everything happens in `#pokemon-battle-trainer` on the [CAIS Discord](https://discord.gg/gCs3v653de). React ⚡ in `#roles` to get meeting pings, and ask Jeremy in the project channel to add you to this repo.
 
 ## Get the data
 
-You need Python 3.10 or newer. There is nothing to install.
+You need Git and Python 3.10 or newer (on macOS and Linux the command is `python3`). There is nothing else to install.
 
 ```bash
 git clone https://github.com/carletonai/pokemon-battle-trainer
@@ -18,7 +18,7 @@ cd pokemon-battle-trainer
 python download_replays.py
 ```
 
-That saves 100 recent public Gen 1 random-battle replays to `data/replays/`, one JSON file each. The battle is in the `log` field. Run `python download_replays.py --help` to get more, filter by rating, or pick another format. The `data/` folder is git-ignored, so downloads never end up in a commit.
+That saves 100 recent public Gen 1 random-battle replays to `data/replays/`, one JSON file each. The battle is in the `log` field; watch the same battle at `https://replay.pokemonshowdown.com/<id>`, where `<id>` is the file name without `.json`. Run `python download_replays.py --help` to get more, filter by rating, or pick another format. The `data/` folder is git-ignored, so downloads never end up in a commit.
 
 ## The plan in one minute
 
@@ -35,7 +35,7 @@ Good first reading:
 
 ## Contributing
 
-Branch from `main`, open a pull request, and get one review before merging. Commit messages follow [Conventional Commits](https://www.conventionalcommits.org/), for example `feat(data): add a rating filter`.
+Branch from `main`, open a pull request, and get one review before merging. Commit messages follow [Conventional Commits](https://www.conventionalcommits.org/), for example `feat(data): add a replay parser`.
 
 ## License
 
