@@ -1,35 +1,14 @@
+# Downloaded replays and anything else big stay out of git
+/data/
+
 # Python
 __pycache__/
-*.py[cod]
-*.egg-info/
 .venv/
-venv/
-build/
-dist/
-.pytest_cache/
-.ruff_cache/
-.mypy_cache/
-.coverage
-htmlcov/
-
-# Third-party checkouts (pinned by third_party/SHOWDOWN_COMMIT)
-third_party/pokemon-showdown/
-
-# Experiment outputs (repo root only; tests/data and the like stay tracked)
-/runs/
-/checkpoints/
-/replays/
-/data/
-*.pt
-*.ckpt
-# Weights & Biases, if it ever replaces SB3's TensorBoard logs (see TODO(player) in src/battle_trainer/player/self_play.py)
-wandb/
 
 # Editors and OS
 .vscode/
 .idea/
 .DS_Store
-*.swp
 
 # Secrets
 .env
