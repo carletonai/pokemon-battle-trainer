@@ -1,42 +1,41 @@
 # AI Pokémon Battle Trainer
 
-Teach an AI to battle Pokémon from scratch and put it on the real [Pokémon Showdown](https://pokemonshowdown.com) ladder against people. A [Carleton AI Society](https://carletonai.com) reinforcement-learning project, starting with Gen 1 random battles.
+A [Carleton AI Society](https://carletonai.com) project: teach an AI to battle Pokémon from scratch, then put it on the real [Pokémon Showdown](https://pokemonshowdown.com) ladder against people. We start with Gen 1 random battles.
 
-The repo is a scaffold: the parts are stubs with `TODO` notes that say what to build.
+We haven't started building yet. For now, the one thing to do here is get some real battles onto your laptop and look at them.
 
-## Quick start
+## Join
 
-You need [uv](https://docs.astral.sh/uv/) and [Node.js](https://nodejs.org) 22.18+. uv fetches Python itself.
+Everything happens in `#pokemon-battle-trainer` on the CAIS Discord. React ⚡ in `#roles` to get meeting pings, and ask Jeremy there to add you to this repo.
 
-```bash
-git clone https://github.com/carletonai/pokemon-battle-trainer && cd pokemon-battle-trainer
-uv sync && uv run pre-commit install    # Python environment and git hooks
-scripts/setup_showdown.sh               # build the Pokémon Showdown simulator
-scripts/start_showdown.sh               # local server; leave it running
-```
+## Get the data
 
-Once it prints `now listening on 0.0.0.0:8000`, in a second terminal:
+You need Python 3.10 or newer. There is nothing to install.
 
 ```bash
-uv run python scripts/smoke_battle.py   # two built-in bots battle on it. Prints a win rate? You're set.
-uv run pytest                           # tests; the ones that need the server skip when it is down
+git clone https://github.com/carletonai/pokemon-battle-trainer
+cd pokemon-battle-trainer
+python download_replays.py
 ```
 
-`make help` lists the same steps as Make targets. Open http://localhost:8000 to watch bots battle in the browser (it redirects to the official client; if Firefox won't connect, try Chrome).
+That saves 100 recent public Gen 1 random-battle replays to `data/replays/`, one JSON file each. The battle is in the `log` field. Run `python download_replays.py --help` to get more, filter by rating, or pick another format. The `data/` folder is git-ignored, so downloads never end up in a commit.
 
-Two notes: on Linux, `uv sync` downloads PyTorch with CUDA (about 3 GB; `pyproject.toml` has a CPU-only switch), and on Windows the scripts need Git Bash or WSL.
+## The plan in one minute
 
-## Pick a task
+- **Arena** runs battles and keeps score.
+- **Ghosts** are bots that copy strong human players, learned from replays like these.
+- **Player** is the bot we train by having it battle itself.
+- **Coach** picks what the Player practises.
 
-Five workstreams, one package each under `src/battle_trainer/`:
+Good first reading:
 
-- **Arena** runs the battles and keeps score. Python; the best place to start.
-- **Ghosts** are imitation copies of human players, trained from public replays. Supervised learning, PyTorch.
-- **Player** is the bot we train, by self-play. RL, PyTorch.
-- **Coach** picks what the Player practises. RL reading; runs the experiments.
-- **Engine** takes the server out of the training loop so it runs fast. Systems, profiling.
+- [Showdown's battle protocol](https://github.com/smogon/pokemon-showdown/blob/master/sim/SIM-PROTOCOL.md) explains how to read a replay's `log`.
+- [poke-env](https://poke-env.readthedocs.io/) is the Python library bots use to play on Showdown.
+- [Metamon](https://github.com/UT-Austin-RPL/metamon) is the prior work we build on.
 
-First tasks for each are in [docs/WORKSTREAMS.md](docs/WORKSTREAMS.md); the full plan is [docs/PLAN.md](docs/PLAN.md). Say which stream you're taking in `#pokemon-battle-trainer` on the CAIS Discord (react ⚡ in `#roles` for meeting pings; ask Jeremy there for repo access), then follow [CONTRIBUTING.md](CONTRIBUTING.md).
+## Contributing
+
+Branch from `main`, open a pull request, and get one review before merging. Commit messages follow [Conventional Commits](https://www.conventionalcommits.org/), for example `feat(data): add a rating filter`.
 
 ## License
 
