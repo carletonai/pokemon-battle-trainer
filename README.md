@@ -10,7 +10,7 @@ Everything happens in `#pokemon-battle-trainer` on the [CAIS Discord](https://di
 
 ## Get the data
 
-You need Git and Python 3.10 or newer (on macOS and Linux the command is `python3`). There is nothing else to install.
+You need Git and Python 3.10 or newer (on macOS and Linux the command is `python3`).
 
 ```bash
 git clone https://github.com/carletonai/pokemon-battle-trainer
@@ -22,7 +22,7 @@ That saves 100 recent public Gen 1 random-battle replays to `data/replays/`, one
 
 ## Run a battle
 
-Battles run on a local [Pokémon Showdown](https://github.com/smogon/pokemon-showdown) server, and bots play on it through [poke-env](https://poke-env.readthedocs.io/). You also need [Node.js](https://nodejs.org) 22.18 or newer.
+Battles run on a local [Pokémon Showdown](https://github.com/smogon/pokemon-showdown) server, which needs [Node.js](https://nodejs.org) 22.18 or newer.
 
 Start the server from this folder and leave it running:
 
@@ -32,13 +32,13 @@ cd pokemon-showdown
 node pokemon-showdown start --no-security
 ```
 
-The first start installs what it needs and takes a couple of minutes. It is ready when it prints `Worker 1 now listening on 0.0.0.0:8000`. `--no-security` lets bots log in without an account, which is fine on your own machine.
+The first start installs what it needs and takes a couple of minutes. It is ready when it prints `Worker 1 now listening on 0.0.0.0:8000`; npm warnings and `CRASH` messages that mention `logs/repl` are harmless. `--no-security` lets bots log in without an account, which is fine on your own machine.
 
-Then open a second terminal in this folder:
+Then open a second terminal in the `pokemon-battle-trainer` folder:
 
 ```bash
 python -m venv .venv
-source .venv/bin/activate   # Windows: .venv\Scripts\activate
+source .venv/bin/activate   # Windows (cmd): .venv\Scripts\activate
 pip install -r requirements.txt
 python random_battle.py
 ```
