@@ -14,10 +14,18 @@ import socket
 import sys
 from pathlib import Path
 
+from poke_env import AccountConfiguration
 from poke_env.player import RandomPlayer
 
 FORMAT = "gen1randombattle"
 OUT = Path("data/battles")
+
+
+def new_player() -> RandomPlayer:
+    # A fresh name every run: Showdown puts a reused name back into any battle that an
+    # interrupted run left unfinished.
+    name = AccountConfiguration.generate("RandomPlayer", rand=True)
+    return RandomPlayer(name, battle_format=FORMAT)
 
 
 def server_is_up() -> bool:
@@ -32,8 +40,7 @@ async def main() -> None:
     if not server_is_up():
         sys.exit('No Showdown server on localhost:8000. See "Run a battle" in the README.')
 
-    one = RandomPlayer(battle_format=FORMAT)
-    two = RandomPlayer(battle_format=FORMAT)
+    one, two = new_player(), new_player()
     await one.battle_against(two, n_battles=1)
 
     (battle,) = one.battles.values()
