@@ -1,6 +1,9 @@
 # Downloaded replays and anything else big stay out of git
 /data/
 
+# The local Showdown server (see README)
+/pokemon-showdown/
+
 # Python
 __pycache__/
 .venv/
