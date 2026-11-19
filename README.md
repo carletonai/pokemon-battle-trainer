@@ -2,7 +2,7 @@
 
 A [Carleton AI Society](https://carletonai.com) project: teach an AI to battle Pokémon from scratch, then put it on the real [Pokémon Showdown](https://pokemonshowdown.com) ladder against people. We start with Gen 1 random battles.
 
-We haven't started building yet. For now, the one thing to do here is get some real battles onto your laptop and look at them.
+We are just getting started. There are two things to do here: get some real battles onto your laptop and look at them, then run a battle of your own.
 
 ## Join
 
@@ -19,6 +19,31 @@ python download_replays.py
 ```
 
 That saves 100 recent public Gen 1 random-battle replays to `data/replays/`, one JSON file each. The battle is in the `log` field; watch the same battle at `https://replay.pokemonshowdown.com/<id>`, where `<id>` is the file name without `.json`. Run `python download_replays.py --help` to get more, filter by rating, or pick another format. The `data/` folder is git-ignored, so downloads never end up in a commit.
+
+## Run a battle
+
+Battles run on a local [Pokémon Showdown](https://github.com/smogon/pokemon-showdown) server, and bots play on it through [poke-env](https://poke-env.readthedocs.io/). You also need [Node.js](https://nodejs.org) 22.18 or newer.
+
+Start the server from this folder and leave it running:
+
+```bash
+git clone --depth 1 https://github.com/smogon/pokemon-showdown
+cd pokemon-showdown
+node pokemon-showdown start --no-security
+```
+
+The first start installs what it needs and takes a couple of minutes. It is ready when it prints `Worker 1 now listening on 0.0.0.0:8000`. `--no-security` lets bots log in without an account, which is fine on your own machine.
+
+Then open a second terminal in this folder:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate   # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+python random_battle.py
+```
+
+Two bots that pick random moves play one Gen 1 random battle. The script prints who won and saves a replay to `data/battles/` that you can open in a browser.
 
 ## The plan in one minute
 
