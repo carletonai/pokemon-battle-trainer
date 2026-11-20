@@ -4,11 +4,11 @@ A [Carleton AI Society](https://carletonai.com) project: teach an AI to battle P
 
 ## Join
 
-Everything happens in `#pokemon-battle-trainer` on the [CAIS Discord](https://discord.gg/gCs3v653de). React ⚡ in `#roles` for meeting pings, and ask Jeremy there for repo access.
+Everything happens in `#pokemon-battle-trainer` on the [CAIS Discord](https://discord.gg/gCs3v653de). Ask Jeremy there to add you to this repo, and react ⚡ in `#roles` for meeting pings.
 
 ## Setup
 
-You need Git, Python 3.10+ and [Node.js](https://nodejs.org) 22.18+. On macOS and Linux, type `python3` instead of `python`.
+You need [Git](https://git-scm.com), [Python](https://www.python.org) 3.10+ and [Node.js](https://nodejs.org) 22.18+. On Windows, use Command Prompt. On macOS and Linux, type `python3` instead of `python`.
 
 ```bash
 git clone https://github.com/carletonai/pokemon-battle-trainer
@@ -21,7 +21,7 @@ cd pokemon-battle-trainer
 python download_replays.py
 ```
 
-This saves 100 recent Gen 1 random-battle replays to `data/replays/`. To watch one, open `https://replay.pokemonshowdown.com/<id>`, where `<id>` is the file name without `.json`.
+This saves 100 recent Gen 1 random-battle replays to `data/replays/`. Watch one at `https://replay.pokemonshowdown.com/<file name without .json>`.
 
 ## Run a battle
 
@@ -33,13 +33,13 @@ cd pokemon-showdown
 node pokemon-showdown start --no-security
 ```
 
-The first start takes a couple of minutes. It is ready when it prints `Worker 1 now listening on 0.0.0.0:8000`. Warnings and `logs/repl` errors around that line are harmless.
+The first start takes a couple of minutes. It is ready when it prints `Worker 1 now listening on 0.0.0.0:8000`. Ignore the npm warnings and any REPL errors.
 
-Then open a second terminal in the `pokemon-battle-trainer` folder:
+Then open a second terminal and `cd` into the `pokemon-battle-trainer` folder:
 
 ```bash
 python -m venv .venv
-source .venv/bin/activate   # Windows (cmd): .venv\Scripts\activate
+source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 python random_battle.py
 ```
@@ -63,4 +63,4 @@ Good first reading:
 
 Branch from `main`, open a pull request and get one review. Commit messages follow [Conventional Commits](https://www.conventionalcommits.org/), like `feat(data): add a replay parser`.
 
-[MIT](LICENSE) license. A student project, not affiliated with Nintendo, Game Freak or The Pokémon Company.
+[MIT](LICENSE) license. Not affiliated with Nintendo, Game Freak or The Pokémon Company.

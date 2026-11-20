@@ -5,7 +5,7 @@
     python download_replays.py --format gen1ou
 
 Each replay is saved as data/replays/<id>.json; the battle itself is the "log" field.
-Re-running skips replays you already have. Needs Python 3.10+ and nothing else.
+Re-running skips replays you already have.
 """
 
 from __future__ import annotations
