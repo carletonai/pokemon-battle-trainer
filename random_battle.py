@@ -1,10 +1,6 @@
 """Battle two random agents on a local Pokémon Showdown server.
 
-    python random_battle.py
-
-Start the server first: see "Run a battle" in the README. Each agent picks a random
-legal move every turn. The script prints who won and saves a replay to data/battles/
-that you can open in a browser.
+Start the server first: see "Run a battle" in the README.
 """
 
 from __future__ import annotations
@@ -22,8 +18,7 @@ OUT = Path("data/battles")
 
 
 def new_player() -> RandomPlayer:
-    # A fresh name every run: Showdown puts a reused name back into any battle that an
-    # interrupted run left unfinished.
+    # A new name each run, or Showdown puts us back into an old unfinished battle.
     name = AccountConfiguration.generate("RandomPlayer", rand=True)
     return RandomPlayer(name, battle_format=FORMAT)
 
