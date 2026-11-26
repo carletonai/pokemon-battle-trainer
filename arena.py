@@ -26,7 +26,7 @@ BOTS = {
 
 
 async def main() -> None:
-    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--battles", type=int, default=500, help="battles per pair of bots")
     n = parser.parse_args().battles
     if not server_is_up():
@@ -49,17 +49,18 @@ async def main() -> None:
         one, two = players[a], players[b]
         await one.battle_against(two, n_battles=n)
         wins, losses, ties = one.n_won_battles, one.n_lost_battles, one.n_tied_battles
-        print(f"{wins} wins, {losses} losses, {ties} ties")
+        print(f"won {wins}, lost {losses}, tied {ties}")
         score[a][b], score[b][a] = wins + ties / 2, losses + ties / 2
         one.reset_battles()
         two.reset_battles()
 
     rate = {name: sum(score[name].values()) / (n * (len(BOTS) - 1)) for name in BOTS}
-    print(f"\n{FORMAT}, {n} battles per pair\n")
-    print(f"{'':3}{'bot':12}{'win rate':>10}" + "".join(f"{'vs ' + b:>16}" for b in BOTS))
+    print(f"\n{FORMAT}, {n} battles per pair, a tie counts as half a win\n")
+    w = max(map(len, BOTS)) + 2  # column width
+    print(f"{'':3}{'bot':{w}}{'win rate':>10}" + "".join(f"{'vs ' + b:>{w + 4}}" for b in BOTS))
     for rank, a in enumerate(sorted(BOTS, key=rate.get, reverse=True), 1):
         cells = ["-" if a == b else f"{score[a][b] / n:.1%}" for b in BOTS]
-        print(f"{rank:<3}{a:12}{rate[a]:>10.1%}" + "".join(f"{cell:>16}" for cell in cells))
+        print(f"{rank:<3}{a:{w}}{rate[a]:>10.1%}" + "".join(f"{cell:>{w + 4}}" for cell in cells))
 
 
 if __name__ == "__main__":
