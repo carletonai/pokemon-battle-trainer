@@ -8,6 +8,7 @@ from __future__ import annotations
 import argparse
 import asyncio
 import logging
+import secrets
 import sys
 from itertools import combinations
 
@@ -34,7 +35,7 @@ async def main() -> None:
     players = {
         name: bot(
             # A new name each run, or Showdown puts us back into an old unfinished battle.
-            AccountConfiguration.generate(name, rand=True),
+            AccountConfiguration(f"arena {secrets.token_hex(4)}", None),
             battle_format=FORMAT,
             max_concurrent_battles=10,
             log_level=logging.ERROR,  # hide poke-env's harmless warnings about Gen 1 moves
