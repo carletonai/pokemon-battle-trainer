@@ -52,7 +52,7 @@ Two bots play one battle with random moves. You get the winner and a replay in `
 python arena.py
 ```
 
-The three built-in bots play each other 500 times each, which takes about a minute. You get every bot's win rate. Add your own bot to `BOTS` in `arena.py` to rank it.
+The three built-in bots play 500 battles per pair, which takes about a minute. You get every bot's win rate. Add your own bot to `BOTS` in `arena.py` to rank it.
 
 ## The plan
 
