@@ -46,6 +46,14 @@ python random_battle.py
 
 Two bots play one battle with random moves. You get the winner and a replay in `data/battles/` to open in your browser.
 
+## Run the arena
+
+```bash
+python arena.py
+```
+
+The three built-in bots play 500 battles per pair, which takes about a minute. You get every bot's win rate. Add your own bot to `BOTS` in `arena.py` to rank it.
+
 ## The plan
 
 - **Arena** runs battles and keeps score.
